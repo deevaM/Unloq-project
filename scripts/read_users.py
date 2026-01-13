@@ -28,7 +28,7 @@ def read_and_process_users(spark: SparkSession):
     )
 
     # Write cleaned data to /processed/users.parquet
-    users_latest.write.mode("overwrite").parquet("processed/users")
+    users_latest.write.mode("overwrite").parquet("output/processed/users")
 
     spark.stop()
 
