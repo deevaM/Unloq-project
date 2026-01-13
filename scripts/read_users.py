@@ -3,11 +3,11 @@ from pyspark.sql.functions import col, when, row_number
 from pyspark.sql.window import Window
 
 
-def read_and_process_users(spark: SparkSession, users_path: str):
+def read_and_process_users(spark: SparkSession):
     users_df = (
         spark.read
         .option("mode", "PERMISSIVE")
-        .json("/landing/users.json")
+        .json("landing/users.json")
     )
 
     # Handle missing country codes
@@ -28,7 +28,7 @@ def read_and_process_users(spark: SparkSession, users_path: str):
     )
 
     # Write cleaned data to /processed/users.parquet
-    users_latest.write.mode("overwrite").parquet("/processed/users.parquet")
+    users_latest.write.mode("overwrite").parquet("processed/users")
 
     spark.stop()
 
