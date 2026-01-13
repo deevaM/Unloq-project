@@ -45,13 +45,13 @@ if __name__ == "__main__":
     )
 
     # Read input data
-    events_df = spark.read.parquet("output/clean_events")
-    users_df = spark.read.parquet("output/clean_users")
+    events_df = spark.read.parquet("processed/events")
+    users_df = spark.read.parquet("processed/users")
 
     countries_df = (
         spark.read
         .option("header", "true")
-        .csv("data/Countries.csv")
+        .csv("landing/countries.csv")
     )
 
     # Run aggregation
