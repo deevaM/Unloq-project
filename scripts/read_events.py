@@ -3,7 +3,7 @@ from pyspark.sql.functions import col, to_timestamp, to_date, expr
 from pyspark.sql.types import StructType, StructField, StringType
 import os
 
-OUTPUT_PATH = "processed/events"
+OUTPUT_PATH = "app/processed/events"
 CHECKPOINT_PATH = "checkpoints/events_stream"
 
 
@@ -112,19 +112,19 @@ if __name__ == "__main__":
 
     # Users must already be processed (latest snapshot)
     users_df = (
-        spark.read.parquet("processed/users")
+        spark.read.parquet("app/processed/users")
         .select("user_id")
         .distinct()
     )
 
     process_batch_events(
         spark,
-        "landing/events.csv",
+        "data/events.csv",
         users_df
     )
 
     process_stream_events(
         spark,
-        "landing/events_stream.json",
+        "data/events_stream.json",
         users_df
     )

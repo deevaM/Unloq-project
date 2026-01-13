@@ -45,13 +45,13 @@ if __name__ == "__main__":
     )
 
     # Read input data
-    events_df = spark.read.parquet("processed/events")
-    users_df = spark.read.parquet("processed/users")
+    events_df = spark.read.parquet("app/processed/events")
+    users_df = spark.read.parquet("app/processed/users")
 
     countries_df = (
         spark.read
         .option("header", "true")
-        .csv("landing/countries.csv")
+        .csv("data/countries.csv")
     )
 
     # Run aggregation
@@ -63,7 +63,7 @@ if __name__ == "__main__":
         .write
         .mode("overwrite")
         .partitionBy("date")
-        .parquet("output/daily_aggregation")
+        .parquet("app/output/daily_aggregation")
     )
 
     spark.stop()

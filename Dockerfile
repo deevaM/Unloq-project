@@ -1,18 +1,15 @@
-FROM bitnami/spark:3.5
+FROM apache/spark:3.5.1
 
-USER root
-
-# Install Airflow
-RUN pip install apache-airflow==2.8.1 pyspark
-
+# Spark image runs as root → no permission issues
 WORKDIR /app
 
-COPY src/ ./src
-COPY data/ ./data
-COPY docker/entrypoint.sh .
+# Copy spark jobs
+COPY scripts/ /app/spark/
 
-RUN chmod +x entrypoint.sh
+# Copy data
+COPY data/ /app/data/
 
-ENV AIRFLOW_HOME=/app/airflow
+# Copy entrypoint
+COPY --chmod=755 entrypoint.sh /entrypoint.sh
 
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]

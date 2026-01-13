@@ -1,12 +1,15 @@
 #!/bin/bash
+set -e
 
-echo "Initializing Airflow DB..."
-airflow db init
+SPARK_SUBMIT=/opt/spark/bin/spark-submit
 
-echo "Starting Airflow scheduler..."
-airflow scheduler &
+echo "===== Running read_users.py ====="
+$SPARK_SUBMIT /app/spark/read_users.py
 
-echo "Running Spark DAG..."
-airflow dags trigger spark_end_to_end_pipeline
+echo "===== Running read_events.py ====="
+$SPARK_SUBMIT /app/spark/read_events.py
 
-sleep infinity
+echo "===== Running daily_aggregation.py ====="
+$SPARK_SUBMIT /app/spark/daily_aggregation.py
+
+echo "===== Pipeline finished successfully ====="

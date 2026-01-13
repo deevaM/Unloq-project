@@ -7,7 +7,7 @@ def read_and_process_users(spark: SparkSession):
     users_df = (
         spark.read
         .option("mode", "PERMISSIVE")
-        .json("landing/users.json")
+        .json("data/users.json")
     )
 
     # Handle missing country codes
@@ -28,7 +28,7 @@ def read_and_process_users(spark: SparkSession):
     )
 
     # Write cleaned data to /processed/users.parquet
-    users_latest.write.mode("overwrite").parquet("processed/users")
+    users_latest.write.mode("overwrite").parquet("app/processed/users")
 
     spark.stop()
 
