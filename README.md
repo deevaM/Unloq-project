@@ -23,11 +23,10 @@ docker run --rm -it \
 ### Output location
 
 - output/
- - ├── processed/
- - │    ├── users/
- - │    └── events/
- - └── daily_aggregation/
-   -    └── date=YYYY-MM-DD/
+  - processed/
+    - users/
+    - events/
+  - daily_aggregations/
 
 
 ## Batch vs Streaming Modes
