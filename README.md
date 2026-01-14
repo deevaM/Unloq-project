@@ -11,7 +11,9 @@ The pipeline ingests user and event data, performs cleansing, deduplication, enr
 - Docker installed
 - No local Spark installation required
 
+
 ### Build & Run
+
 ```bash
 docker build -t unloq-spark .
 docker run --rm -it \
@@ -20,34 +22,30 @@ docker run --rm -it \
   unloq
 ```
 
-### Output location
+### Processed files & Output location
 
-- output/
-  - processed/
+
+- processed/
     - users/
     - events/
-  - daily_aggregations/
+- output/
+    - daily_aggregations/
 
 
-## Batch vs Streaming Modes
+## Batch & Streaming Modes
 
 ### Batch Mode
 - Reads full historical files:
   - `users.json`
   - `events.csv`
 - Used for:
-  - Backfills
-  - Reprocessing
-  - Recovery scenarios
+  - Backfills, Reprocessing, Recovery scenarios
 
 
 ### Streaming Mode (Simulated)
 - Reads incremental events from `events_stream.json`
 - Processed in **micro-batches**
 - Mimics real-time ingestion without external systems (e.g., Kafka)
-
-**Note:**  
-Since the streaming source is a single file, Structured Streaming is simulated using **deterministic micro-batching logic**.
 
 
 ## Deduplication & Watermarking Strategy
@@ -76,13 +74,14 @@ The pipeline is **idempotent by design**.
 | Overlapping batch & stream | Deduplicated |
 | Partial failures | Recoverable |
 
+
 ### How Idempotency Is Achieved
 - Deterministic keys (`event_id`)
 - Append-only writes
 - Deduplication before every write
 - Stateless Spark jobs
 
----
+
 
 ## Design Assumptions & Trade-offs
 
@@ -90,7 +89,6 @@ The pipeline is **idempotent by design**.
 - `event_id` is globally unique
 - User dimension is treated as **SCD Type-1**
 - Late data is bounded
-- Streaming source is file-based (simulation)
 
 ### Trade-offs
 
@@ -125,4 +123,5 @@ This design scales naturally with minimal changes.
 - Broadcast joins for small dimensions
 - Adaptive Query Execution (AQE)
 - Periodic compaction jobs
+- OTIMIZE and Z-ORDER 
 

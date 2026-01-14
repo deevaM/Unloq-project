@@ -3,7 +3,7 @@ from pyspark.sql.functions import col, to_timestamp, to_date, expr
 from pyspark.sql.types import StructType, StructField, StringType
 import os
 
-OUTPUT_PATH = "output/processed/events"
+OUTPUT_PATH = "processed/events"
 CHECKPOINT_PATH = "checkpoints/events_stream"
 
 
@@ -18,6 +18,8 @@ def read_existing_events(spark):
 
 
 def clean_events(df):
+    # Cleans event data: parses timestamps, removes invalid records, drop duplicates.
+
     return (
         df
         .withColumn(
@@ -54,8 +56,7 @@ def process_batch_events(spark, events_path, users_df):
 
 def process_stream_events(spark, stream_file_path, users_df):
     """
-    Simulates streaming ingestion from a single JSON file
-    using micro-batch processing.
+    Simulates streaming ingestion from a single JSON file using micro-batch processing.
     """
 
     # Read entire file as batch
@@ -112,7 +113,7 @@ if __name__ == "__main__":
 
     # Users must already be processed (latest snapshot)
     users_df = (
-        spark.read.parquet("output/processed/users")
+        spark.read.parquet("processed/users")
         .select("user_id")
         .distinct()
     )

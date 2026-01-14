@@ -6,7 +6,7 @@ from pyspark.sql.window import Window
 def read_and_process_users(spark: SparkSession):
     users_df = (
         spark.read
-        .option("mode", "PERMISSIVE")
+        .option("mode", "PERMISSIVE") # Handle corrupt records
         .json("data/users.json")
     )
 
@@ -28,7 +28,7 @@ def read_and_process_users(spark: SparkSession):
     )
 
     # Write cleaned data to /processed/users.parquet
-    users_latest.write.mode("overwrite").parquet("output/processed/users")
+    users_latest.write.mode("overwrite").parquet("processed/users")
 
     spark.stop()
 

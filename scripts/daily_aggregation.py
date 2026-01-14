@@ -44,7 +44,7 @@ if __name__ == "__main__":
         .getOrCreate()
     )
 
-    # Read input data
+    # Read processed/cleaned data
     events_df = spark.read.parquet("processed/events")
     users_df = spark.read.parquet("processed/users")
 
